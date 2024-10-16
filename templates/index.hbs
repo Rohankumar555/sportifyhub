@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Sportify Hub</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f8f9fa;
+        }
+        .navbar {
+            box-shadow: 0 2px 4px rgba(0,0,0,.1);
+        }
+        .hero-section {
+            background-image: url('/css/pics/back-2.jpg');
+            background-size: cover;
+            background-position: center;
+            height: 60vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        .cta-button {
+            font-size: 1.2rem;
+            padding: 10px 30px;
+            transition: all 0.3s ease;
+        }
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        .card {
+            border: none;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-dumbbell me-2"></i>Sportify Hub
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/login">Login</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="hero-section">
+        <div class="text-center">
+            <h1 class="display-4 mb-4">Welcome to Sportify Hub</h1>
+            <a href="/login" class="btn btn-warning btn-lg cta-button">
+                Book Your Court Now
+            </a>
+        </div>
+    </div>
+
+    <div class="container my-5">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="card">
+                    <div class="card-body">
+                        <h2 class="card-title text-center mb-4">Sports Management on Sportify Hub</h2>
+                        <p class="card-text">
+                            Sportify Hub is your ultimate destination for hassle-free sports facility bookings. Whether you're looking to reserve a tennis court, basketball court, or any other sports venue, we've got you covered. Our easy-to-use interface allows you to browse available facilities, check schedules, and book your preferred time slot in just a few clicks.
+                        </p>
+                        <p class="card-text">
+                            With Sportify Hub, you can:
+                        </p>
+                        <ul>
+                            <li>View real-time availability of sports facilities</li>
+                            <li>Make instant bookings for your favorite sports</li>
+                            <li>Manage and modify your reservations</li>
+                            <li>Explore new sports venues in your area</li>
+                        </ul>
+                        <p class="card-text">
+                            Join the Sportify Hub community today and elevate your sports experience. Whether you're a casual player or a serious athlete, we're here to make your sports journey smoother and more enjoyable.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

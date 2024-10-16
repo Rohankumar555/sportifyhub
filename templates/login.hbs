@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>login</title>
+    <link rel="stylesheet" href="css/login.css">
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+</head>
+<body>
+    
+    <div class="login-page">
+        <div class="form">
+        <!--  <form class="register-form">
+            <input type="text"  placeholder="name"/>
+            <input type="password" placeholder="password"/>
+            <input type="text" placeholder="email address"/>
+            <button>create</button>
+            <p class="message">Already registered? <a href="#">Sign In</a></p>
+          </form>-->
+          <form class="login-form" name="myform" method="post" action="/login" >
+            <input type="text" name="username" id="username" placeholder="username"/>
+            <input type="password" name="password" id="password"placeholder="password"/>
+            <button name="register">login</button>
+            {{!-- <p class="message">Not registered? <a href="/user_registration">Create an account</a></p> --}}
+          </form>
+        </div>
+      </div>
+
+    <!-- Javascript files for login-->
+    <script>
+      function validateform(){  
+          var name=document.getElementById("username").value;  
+          var password=document.getElementById("password").value;  
+            
+          if (name==null || name==""){  
+            alert("Email can't be blank");  
+            return false;  
+          }else if(password.length<7){  
+            alert("Password must be at least 7 characters long.");  
+            return false;  
+            }
+            
+            return true;  
+      }  
+      document.getElementsByName('register')[0].addEventListener('click', async (event) => {
+        event.preventDefault();
+        var check = validateform();
+        if (check == true) {
+            const response = await fetch(url = "http://localhost:5050/login", {
+                method: "POST", // *GET, POST, PUT, DELETE, etc.
+                mode: "cors", // no-cors, *cors, same-origin
+                cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+                credentials: "same-origin", // include, *same-origin, omit
+                headers: {
+                    "Content-Type": "application/json",
+                    // 'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                redirect: "follow", // manual, *follow, error
+                referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+                body: JSON.stringify({
+                    email:document.getElementById("username").value,  
+                    password:document.getElementById("password").value  
+                    
+                }),
+                // body data type must match "Content-Type" header
+            });
+            {{!-- console.log(response); --}}
+          if(response)
+          {
+                                const data = await response.json();
+                    if (data.token) {
+                        // Store the token in localStorage
+                        localStorage.setItem('authToken', data.token);
+
+                        // Decode the JWT to get the center_id
+                        const tokenParts = data.token.split('.');
+                        if (tokenParts.length === 3) {
+                            const payload = JSON.parse(atob(tokenParts[1]));
+                            const centerId = payload.TokenContent.center_id;
+                            const sports=payload.TokenContent.sports
+                            // Store the center_id in localStorage
+                            localStorage.setItem('centerId', centerId);
+                            localStorage.setItem('sports',sports);
+                            console.log("Center ID:", centerId);
+                        }
+                    }
+
+            console.log("Hello");
+            window.location.replace("/booking");
+          }
+        }
+      }
+      );
+
+ 
+    </script>
+    
+</body>
+</html>

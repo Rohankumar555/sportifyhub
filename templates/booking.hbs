@@ -1,0 +1,328 @@
+
+<!DOCTYPE html lang="en">
+<head>
+  <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Welcome login</title>
+    <link rel="stylesheet" href="css/booking.css">
+
+<link href="https://api.mapbox.com/mapbox-gl-js/v3.2.0/mapbox-gl.css" rel="stylesheet">
+<script src="https://api.mapbox.com/mapbox-gl-js/v3.2.0/mapbox-gl.js"></script>    
+<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://getbootstrap.com/assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+
+  
+     
+  </head>
+   
+  <body >
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Sportify Hub</a>
+        </div>
+        <div class="navbar-collapse collapse navbar-right main-nav" id="navbar">
+           <ul class="nav navbar-nav ">
+            {{!-- <li id="sub-1"><a href="/user_detail_update">Update Details</a></li> --}}
+            <li id="sub-2"><a href="/schedule">Center Schedule</a></li>
+            <li id="sub-5"><a href="/logout">Logout</a></li>
+          </ul>
+          
+          <div class="bottom-arrow"></div>
+        </div><!--/.navbar-collapse -->
+      </div>
+    </nav>
+
+    <div class="jumbotron">
+      <div class="container">
+        <h1>Hello,{{#if firstName}} {{ firstName }}{{/if}}</h1>
+        <p>Unlock seamless travel with just a tap – your journey, your way, with our hassle-free online cab booking app!</p>
+        <p><a class="btn btn-primary btn-lg"   role="button" onClick="document.getElementById('login-form').scrollIntoView();" >Book A Ride»</a></p>
+      </div>
+    </div>
+    {{!-- locating maps --}}
+    <div>
+      <center>
+        <div class="map-container">
+      <div id="map"></div>
+      </div>
+    </center>
+    </div>
+    <br>
+    
+       
+      
+          
+        
+      
+        
+          <div class="login-page">
+        <div class="form">
+            <form id="bookingForm" name="myform" class="login-form">
+                
+                <!-- Display Center Name (center is pre-selected) -->
+                <div>
+                    <h2>Center: <span id="center-name"></span></h2>
+                    <input type="hidden" id="center-id" name="center" value="fixedCenterId"> <!-- Center ID fetched automatically for the manager -->
+                </div>
+
+                <!-- Sport Selection (sports are dependent on center) -->
+                <div class="custom-dropdown">
+                    <select id="sport" name="sport" required>
+                        <!-- Sports dynamically populated based on the chosen center -->
+                    </select>
+                </div>
+                <div class="custom-dropdown">
+                    <select id="courtsDropdown" name="courtsDropdown" required>
+                        <!-- Sports dynamically populated based on the chosen center -->
+                    </select>
+                </div>
+                <!-- Date Selection -->
+                <div class="date-time">
+                    <label for="date&time">Date and Time</label>
+                    <input type="date" id="date" name="date" required>
+                </div>
+
+                <!-- Time Slot Selection -->
+                <div class="custom-dropdown">
+                    <select id="slot" name="slot" required>
+                        <option value="">Select Slot</option>
+                        <!-- Available slots dynamically populated based on selected sport and date -->
+                    </select>
+                </div>
+
+                <!-- User Name Input -->
+                <div>
+                    <input type="text" id="name" name="name" placeholder="Enter Your Name" required>
+                </div>
+
+                <!-- Submit Button -->
+                <button class="submit" name="register"type="submit">Book</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
+
+<script>
+        // Fetch centers, sports, and available slots from the backend
+        const centerSelect = document.getElementById('center');
+        const sportSelect = document.getElementById('sport');
+        const dateInput = document.getElementById('date');
+        const slotSelect = document.getElementById('slot');
+        const submitButton = document.querySelector('button[type="submit"]');
+        const courtSelect=document.getElementById("courtsDropdown");
+        const  nameP=document.getElementById("name");
+      document.getElementsByName('register')[0].addEventListener('click', async (event) => {
+        event.preventDefault();
+                    const tokenParts = localStorage.getItem('centerId');
+
+            const response = await fetch(url = "http://localhost:5050/createBooking", {
+                method: "POST", // *GET, POST, PUT, DELETE, etc.
+                mode: "cors", // no-cors, *cors, same-origin
+                cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+                credentials: "same-origin", // include, *same-origin, omit
+                headers: {
+                    "Content-Type": "application/json",
+                    // 'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                redirect: "follow", // manual, *follow, error
+                referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+                body: JSON.stringify({
+                    center_id:tokenParts,
+                    sport_id:sportSelect.value,
+                    court_number:courtSelect.value,
+                    date:dateInput.value,
+                    hour_slot:courtSelect.value,
+                    booked_by:nameP.value
+                }),
+                // body data type must match "Content-Type" header
+            });
+            {{!-- console.log(response); --}}
+          if(response)
+          {
+                                const data = await response.json();
+                    if (data.token) {
+                        // Store the token in localStorage
+                        localStorage.setItem('authToken', data.token);
+
+                        // Decode the JWT to get the center_id
+                        const tokenParts = data.token.split('.');
+                        if (tokenParts.length === 3) {
+                            const payload = JSON.parse(atob(tokenParts[1]));
+                            const centerId = payload.TokenContent.center_id;
+                            const sports=payload.TokenContent.sports
+                            // Store the center_id in localStorage
+                            localStorage.setItem('centerId', centerId);
+                            localStorage.setItem('sports',sports);
+                            console.log("Center ID:", centerId);
+                        }
+                    }
+
+            console.log("Hello");
+            window.location.replace("/booking");
+          }
+      }
+      );
+
+ 
+        // Load centers on page load
+        window.onload = async function() {
+            try {
+                populateSports();
+            } catch (error) {
+                console.error('Error loading centers:', error);
+            }
+        };
+
+        // Populate sports
+        function populateSports()
+
+         {
+              const sportsArray = localStorage.getItem('sports').split(','); // Retrieve sports from localStorage
+  const sportSelect = document.getElementById('sport');
+if (sportsArray && sportsArray.length > 0) {
+  // Iterate over the sports array and populate the dropdown
+  sportsArray.forEach(sport => {
+    const option = document.createElement('option');
+    option.value = sport;
+    option.textContent = sport;
+    sportSelect.appendChild(option);
+  });
+} else {
+    sportSelect.innerHTML = '<option value="">No Sports Available</option>';
+    sportSelect.disabled = true; // Disable if no sports found
+  }
+        }
+async function fetchCourts(sport_id) {
+    try {
+        const response = await fetch(`/courts?sport_id=${sport_id}`);  // Send GET request with sport_id
+        const courtsData = await response.json();  // Parse JSON response
+        console.log(courtsData);
+        populateCourtsDropdown(courtsData);
+    } catch (error) {
+        console.error('Error fetching courts:', error);
+    }
+}
+
+function populateCourtsDropdown(courtsDaa) {
+    const courtsData=parseInt(courtsDaa)
+    console.log(courtsData); // Log the courtsData to see the received value
+    const dropdown = document.getElementById('courtsDropdown');
+    dropdown.innerHTML = '<option value="">Select a court</option>'; // Reset dropdown
+
+    // If courtsData is a number, populate the dropdown with court numbers
+    if (Number.isInteger(courtsData) && courtsData > 0) {
+        for (let i = 0; i < courtsData; i++) {
+            const option = document.createElement('option');
+            option.value = i; // Option value as the court number
+            option.textContent = `Court ${i+1}`; // Display text for the court number
+            dropdown.appendChild(option);
+        }
+    } else {
+        console.log('No courts available for this sport');
+    }
+}
+
+        // Enable date input when a sport is selected
+        sportSelect.addEventListener('change', function() {
+            if (this.value) {
+                dateInput.disabled = false;
+                fetchCourts(this.value);
+            } else {
+                dateInput.disabled = true;
+                slotSelect.disabled = true;
+                submitButton.disabled = true;
+            }
+        });
+function getAvailableSlots(bookedSlots) {
+    const totalSlots = Array.from({ length: 24 }, (_, i) => i); // Create an array [0, 1, ..., 23]
+    
+    // Create a Set of booked hours for fast lookup
+    const bookedHours = new Set(bookedSlots.map(slot => slot.hour)); // Assuming hour is in booked slot
+
+    // Filter out the booked hours from total slots
+    const availableSlots = totalSlots.filter(hour => !bookedHours.has(hour));
+    populateSlots(availableSlots);
+    return availableSlots; // Returns an array of available hour slots
+}
+        // Fetch and populate available slots when a date is selected
+dateInput.addEventListener('change', async function() {
+    slotSelect.innerHTML = '<option value="">Select Slot</option>'; // Reset slot dropdown
+    slotSelect.disabled = true; // Disable slot select initially
+    submitButton.disabled = true; // Disable submit button
+
+    // Check if all necessary fields are filled
+    if (this.value && sportSelect.value && courtSelect.value) {
+        try {
+                    const tokenParts = localStorage.getItem('centerId');
+
+            // Prepare the request body with necessary data
+            const requestBody = {
+
+                sport: sportSelect.value, // Selected sport ID
+                court: courtSelect.value, // Selected court (make sure courtSelect is defined)
+                date: this.value, // Selected date
+                center: tokenParts
+            };
+
+            // Fetch the bookings using POST method
+            const response = await fetch('/bookedSlots', {
+                method: 'POST', // Use POST method for sending data
+                headers: {
+                    'Content-Type': 'application/json' // Set content type to JSON
+                },
+                body: JSON.stringify(requestBody) // Convert the request body to JSON
+            });
+
+            // Check if the response is OK (status 200)
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            const slots = await response.json(); // Parse JSON response
+            console.log(slots);
+            const availableSlots = getAvailableSlots(slots);
+console.log('Available Slots:', availableSlots);
+        } catch (error) {
+            console.error('Error loading slots:', error); // Log any errors that occur
+        }
+    }
+});
+
+        // Populate available slots
+        function populateSlots(slots) {
+            slotSelect.disabled = false;
+            slots.forEach(slot => {
+                const option = document.createElement('option');
+                option.value = slot;  // Assuming slot object has a time property
+                option.text = `Slot timing ${slot}`;  // Example: 10:00 AM - 11:00 AM
+                slotSelect.appendChild(option);
+            });
+        }
+
+        // Enable submit button when a slot is selected
+        slotSelect.addEventListener('change', function() {
+            submitButton.disabled = !this.value;
+        });
+
+          
+
+</script>
+
+<script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+ 
+ 
+    
+</body>

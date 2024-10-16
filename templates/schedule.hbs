@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/schedule.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://getbootstrap.com/assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+    <title>Court Schedule</title>
+</head>
+<body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Pick'n'Drop</a>
+        </div>
+        <div class="navbar-collapse collapse navbar-right main-nav" id="navbar">
+           <ul class="nav navbar-nav ">
+            <li id="sub-1"><a href="/login_homepage">Book A Ride</a></li>
+            <li id="sub-2"><a href="/user_detail_update">Update Details</a></li>
+            <li id="sub-5"><a href="/logout">Logout</a></li>
+          </ul>
+           
+          <div class="bottom-arrow"></div>
+        </div>
+      </div>
+    </nav>
+    
+    <div class="container">
+        <h4 class="text-center ml-4 mt-4 mb-5">View Court Schedule</h4>
+        
+        <div class="row mb-4">
+            <div class="col-md-4">
+                <label for="date">Select Date:</label>
+                <input type="date" id="date" class="form-control">
+            </div>
+            <div class="col-md-4">
+                <label for="sport">Enter Sport:</label>
+                <input type="text" id="sport" class="form-control" placeholder="e.g., Tennis">
+            </div>
+            <div class="col-md-4">
+                <button id="fetch-schedule" class="btn btn-primary mt-4">Fetch Schedule</button>
+            </div>
+        </div>
+
+        <table id="schedule-table">
+            <thead>
+                <tr>
+                    <th>Hour</th>
+                    {{#each courts}}
+                        <th>{{this}}</th>
+                    {{/each}}
+                </tr>
+            </thead>
+            <tbody>
+                {{#each (range 1 24)}}
+                    <tr>
+                        <td>Hour_{{this}}</td>
+                        {{#each ../records as |record|}}
+                            <td>
+                                {{#with (findBooking record ../this)}}
+                                    {{booked_by}}
+                                {{else}}
+                                    free
+                                {{/with}}
+                            </td>
+                        {{/each}}
+                    </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script>
+  $(document).ready(function() {
+    $('#fetch-schedule').on('click', function() {
+        const date = $('#date').val();
+        const sport = $('#sport').val();
+        const tokenParts = localStorage.getItem('centerId');
+        
+        if (!date || !sport) {
+            alert('Please select a date and enter a sport');
+            return;
+        }
+
+        // Redirect to the schedule page with query parameters
+        window.location.href = `/schedule?center_id=${tokenParts}&sport_id=${sport}&date=${date}`;
+    });
+});
+
+    </script>
+</body>
+</html>
