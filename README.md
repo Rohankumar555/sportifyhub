@@ -83,10 +83,10 @@ The key objectives are to:
 - Implement a feedback or rating system for customers to review facilities and court conditions.
 
 ## Login Credentials
-1)email:kuber@gmail.com
+-email:kuber@gmail.com
    passowrd:12345678
    center Manager:Bangalore
--2)email:rohan@gmail.com
+- email:rohan@gmail.com
    passowrd:12344321
    center Manager:Allahabad
 
@@ -97,13 +97,13 @@ The key objectives are to:
 ### User Manual
 
 ## Create Booking
-- 1)First , login using the given login credentials.After successful login, you will enter into booking page.
-- 2)Next, to create a booking go to booking section at the end.
-- 3)Select the sport and the date on which you want the court.After choosing a court, you will be given the option to choose a free slot.
-- 4)Finally , enter the name of the customer and book.The booking is successfully done after this step.
+- First , login using the given login credentials.After successful login, you will enter into booking page.
+- Next, to create a booking go to booking section at the end.
+- Select the sport and the date on which you want the court.After choosing a court, you will be given the option to choose a free slot.
+- Finally , enter the name of the customer and book.The booking is successfully done after this step.
 
 ## View Booking
-- 1)To view the bookings, click on centre schedule at top right of navbar, just after login.
-- 2)Now enter the date of which you want the data, followed by the game.
-- 3)Enter the name of sport in small letter, Eg:cricket,badminton,football.
-- 4)Click on fetch schedule to get details of hour slots for each court for a game.
+- To view the bookings, click on centre schedule at top right of navbar, just after login.
+- Now enter the date of which you want the data, followed by the game.
+- Enter the name of sport in small letter, Eg:cricket,badminton,football.
+- Click on fetch schedule to get details of hour slots for each court for a game.
