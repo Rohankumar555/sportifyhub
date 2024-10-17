@@ -1,4 +1,4 @@
-# Sports Booking App
+# Sportify Hub
 
 ## Introduction
 
@@ -77,3 +77,12 @@ The key objectives are to:
 - Improve the booking system by adding filters for court types, time preferences, or price ranges.
 - Extend the app’s functionality by building a mobile-friendly version for easier access and bookings.
 - Implement a feedback or rating system for customers to review facilities and court conditions.
+
+## Login Credentials
+1)email:kuber@gmail.com
+   passowrd:12345678
+   center Manager:Bangalore
+
+## Assumptions
+-Each Center has one center manager.
+-Manager's account details are hard-coded, as its assumed that they are hired by the organisation.
