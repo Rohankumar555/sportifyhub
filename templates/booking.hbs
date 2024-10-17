@@ -42,9 +42,9 @@
 
     <div class="jumbotron">
       <div class="container">
-        <h1>Hello,{{#if firstName}} {{ firstName }}{{/if}}</h1>
-        <p>Unlock seamless travel with just a tap – your journey, your way, with our hassle-free online cab booking app!</p>
-        <p><a class="btn btn-primary btn-lg"   role="button" onClick="document.getElementById('login-form').scrollIntoView();" >Book A Ride»</a></p>
+        <h1>Hello,</h1>
+        <p>Effortlessly book sports courts by choosing your center, sport, and preferred time slot all in one place!</p>
+        <p><a class="btn btn-primary btn-lg"   role="button" onClick="document.getElementById('login-page').scrollIntoView();" >Book a Slot»</a></p>
       </div>
     </div>
     {{!-- locating maps --}}
@@ -220,10 +220,10 @@ function populateCourtsDropdown(courtsDaa) {
 
     // If courtsData is a number, populate the dropdown with court numbers
     if (Number.isInteger(courtsData) && courtsData > 0) {
-        for (let i = 0; i < courtsData; i++) {
+        for (let i = 1; i <= courtsData; i++) {
             const option = document.createElement('option');
             option.value = i; // Option value as the court number
-            option.textContent = `Court ${i+1}`; // Display text for the court number
+            option.textContent = `Court ${i}`; // Display text for the court number
             dropdown.appendChild(option);
         }
     } else {
