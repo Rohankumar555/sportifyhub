@@ -1,6 +1,6 @@
 # Sportify Hub
 
-##Hosted Link
+## Hosted Link
 
 -https://sportifyhub.onrender.com/
 
